@@ -1,0 +1,83 @@
+name: build-binaries
+on:
+  push:
+    tags: ["v*"]   # builds when you push a tag like v1.0.0
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-13, macos-latest, ubuntu-latest]  # Win, mac Intel, mac Apple Silicon, Linux
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pygame pyinstaller
+
+      # ---- Windows (PowerShell) ----
+      - name: Build on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $script    = "keyboard input tester.py"
+          $name      = "Keyboard Input Tester"
+          $addData   = if (Test-Path "assets") { '--add-data "assets;assets"' } else { "" }
+          $iconFlag  = if (Test-Path "assets\icon.ico") { '--icon assets\icon.ico' } else { "" }
+          python -m PyInstaller --noconfirm --windowed --onefile `
+            --name "$name" $addData $iconFlag `
+            "$script"
+
+      # ---- macOS (bash; works for macos-13 & macos-latest) ----
+      - name: Build on macOS
+        if: startsWith(runner.os, 'mac')
+        shell: bash
+        run: |
+          script="keyboard input tester.py"
+          name="Keyboard Input Tester"
+          add_data=""
+          [ -d assets ] && add_data="--add-data assets:assets"
+          icon_flag=""
+          [ -f assets/icon.icns ] && icon_flag="--icon assets/icon.icns"
+          python -m PyInstaller --noconfirm --windowed --onefile \
+            --name "$name" $add_data $icon_flag \
+            "$script"
+
+      # ---- Linux (bash) ----
+      - name: Build on Linux
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          script="keyboard input tester.py"
+          name="keyboard-input-tester"
+          add_data=""
+          [ -d assets ] && add_data="--add-data assets:assets"
+          python -m PyInstaller --noconfirm --windowed --onefile \
+            --name "$name" $add_data \
+            "$script"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-build
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/**/*   # attach all OS builds
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
