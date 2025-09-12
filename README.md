@@ -6,7 +6,7 @@ A hobby project prototyping custom mechanical keyboards, featuring an open-sourc
 **
 A desktop key-tester for custom keyboard builds. Keys light when pressed. Includes layout presets (Full-size / TKL / 75% / 60%), theme options, and a “Fit to Window” mode.
 ## Download
-Head to **Releases** and grab the latest build for your OS:
+Head to **Keyboard Input Tester Downloads** and grab the latest build for your OS:
 - Windows: `Keyboard Input Tester.exe`
 - macOS: `Keyboard Input Tester`
 - Linux: `keyboard-input-tester`
