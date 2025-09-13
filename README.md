@@ -3,11 +3,9 @@ An open-source, real-time keyboard input tester that highlights active keys.
 # Keyboard Input Tester App
 A desktop key-tester for custom keyboard builds. Keys light when pressed. Includes layout presets (Full-size / TKL / 75% / 60%), theme options, and a “Fit to Window” mode.
 ## Download
-Head to **Keyboard Input Tester/Downloads** and grab the latest build for your OS:
+Head to **Keyboard Input Tester/Downloads** and grab the latest build:
 - Windows: `Keyboard Input Tester.exe`
-- macOS: `Keyboard Input Tester`
-- Linux: `keyboard-input-tester`
-
+- 
 > On Windows, SmartScreen may warn about unsigned apps. Click **More info → Run anyway**.
 ## Run from source
 ```bash
