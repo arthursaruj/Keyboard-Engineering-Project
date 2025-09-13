@@ -1,5 +1,4 @@
-A hobby project prototyping custom mechanical keyboards, featuring an open-source application for key input testing and a lightweight typing benchmark game.
-
+An open-source, real-time keyboard input tester that highlights active keys.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Keyboard Input Tester App
 A desktop key-tester for custom keyboard builds. Keys light when pressed. Includes layout presets (Full-size / TKL / 75% / 60%), theme options, and a “Fit to Window” mode.
